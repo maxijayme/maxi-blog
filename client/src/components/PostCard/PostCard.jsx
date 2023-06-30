@@ -1,6 +1,6 @@
 import PostCardUI from "./PostCardUI"
-export default function PostCard() {
+export default function PostCard({entry}) {
     return (           
-        <PostCardUI/>
+        <PostCardUI entry={entry}/>
     )
 }

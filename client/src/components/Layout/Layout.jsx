@@ -1,11 +1,12 @@
 import Header from '../Header/Header.jsx'
 import Footer from '../Footer/Footer.jsx'
 import Navbar from '../Navbar/Navbar.jsx'
-function Layout({children}) {  
+import { useState } from 'react'
+function Layout({children, enablePostBtns=false, entryData ={}}) { 
   return (
     <>
       <Header/>
-      <Navbar/>
+      <Navbar enablePostBtns={enablePostBtns} entryData={entryData}/>
           <main className='container-fluid h-100'>
             {children}
           </main>
