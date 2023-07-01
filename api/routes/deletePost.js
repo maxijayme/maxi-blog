@@ -6,7 +6,6 @@ import fs from 'fs';
 
 
 router.delete('/:id',(req,res)=>{
-    console.log('entra')
     try{
         const {id} = req.params;
         const {imagePath} = req.body;

@@ -1,5 +1,6 @@
 import Modal from '../Modal/Modal.jsx'
-export default function NavbarUi({handleCreate,handleEdit, handleSave, handleDelete, enablePostBtns, showModal, msg}) {
+export default function NavbarUi({handleCreate,handleEdit, handleDelete, enablePostBtns, showModal, msg, enableEdit}) {
+    
     return (
         <nav>
             {!enablePostBtns && <button onClick={handleCreate}>
@@ -7,15 +8,12 @@ export default function NavbarUi({handleCreate,handleEdit, handleSave, handleDel
             </button>}
             {enablePostBtns && 
             <div>
-                <button onClick={handleEdit}>
-                     Editar entrada
-                </button>
-                <button onClick={handleSave}>
-                     Guardar entrada
-                </button>
-                <button onClick={handleDelete}>
+                {enableEdit && <button onClick={handleEdit}>
+                    Editar entrada
+                </button>}
+                {enableEdit && <button onClick={handleDelete}>
                      Eliminar entrada
-                </button>
+                </button>}
             </div>}
             {showModal && <Modal msg={msg}/>}
         </nav>

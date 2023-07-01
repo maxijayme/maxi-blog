@@ -6,12 +6,12 @@ import {URL} from '../../utils/url'
 
 export default function CompleteEntry() {
     const { id } = useParams();
+    const [entryData, setEntryData] = useState([])
+   
 
     useEffect(()=>{
         getPost(id)
     },[])
-
-    const [entryData, setEntryData] = useState([])
 
     const getPost= async (id)=>{
         try{

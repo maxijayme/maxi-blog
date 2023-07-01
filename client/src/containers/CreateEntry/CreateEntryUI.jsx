@@ -1,6 +1,6 @@
 import Modal from '../../components/Modal/Modal.jsx'
 
-export default function CreateEntryUI({showModal,entryForm, labelsData, handleInputForm, handleImageUpload, handleFormSubmit}) {
+export default function CreateEntryUI({saveOrUpdateBtns, showModal, msg,entryForm, labelsData, handleInputForm, handleImageUpload, handleFormSubmit, handleFormUpdate}) {
     return (
         <>
             <form encType="multipart/form-data" method="post">
@@ -23,9 +23,10 @@ export default function CreateEntryUI({showModal,entryForm, labelsData, handleIn
                     onChange={handleInputForm} 
                 />
                 <label  id="title" >{labelsData.title}</label> 
-                <button id="createPost_button" onClick={handleFormSubmit} >Guardar entrada</button>
+                {!saveOrUpdateBtns && <button id="createPost_button" onClick={handleFormSubmit} >Guardar entrada</button>}
+                {saveOrUpdateBtns && <button id="updatePost_button" onClick={handleFormUpdate} >Guardar cambios</button>}
             </form>
-            {showModal && <Modal msg="El post se creó exitosamente"/>}
+            {showModal && <Modal msg={msg}/>}
         </>
     )
 }
