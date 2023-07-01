@@ -3,24 +3,39 @@ import Layout from "../../components/Layout/Layout.jsx"
 import { useState, useContext, useEffect } from 'react'
 import {URL} from '../../utils/url'
 import { useNavigate } from 'react-router-dom'
-import PostContext from '../../context/postContext'
 import LocationContext from '../../context/locationContext.jsx'
 
 export default function CreateEntry() {
     const navigate = useNavigate()
     const [showModal,setShowModal] = useState(false)
     const [msg,setMsg] = useState("")
-    const {postData} = useContext(PostContext)
     const [enablePostBtns, setEnalePostBtns] = useState (false)
     const [saveOrUpdateBtns,setSaveOrUpdateBtns] = useState(false)
     const {previousLocation} = useContext(LocationContext)
+    const getLocalStorageData = localStorage.maxiBlogPostData
+    let savedData;
+
+    if(getLocalStorageData){
+        savedData = JSON.parse(getLocalStorageData)
+    }
+    useEffect(()=>{
+        if(savedData?.title){
+            setEnalePostBtns(true)
+        }
+        if(previousLocation === '/'){
+            setSaveOrUpdateBtns(false)
+        }else{
+            setSaveOrUpdateBtns(true)
+        }
+    },[])
+
     const [entryForm, setEntryForm] = useState(
-        postData.title?
+        savedData?.image?
         {
-            title:postData.title,
+            title:savedData.title,
             image:"image",
-            imageUrl:`${URL}/${postData.image}`,
-            paragraph:postData.entry_content
+            imageUrl:`${URL}/${savedData.image}`,
+            paragraph:savedData.entry_content
         }:{
             title:"",
             image:"",
@@ -35,17 +50,6 @@ export default function CreateEntry() {
             paragraph:""
         }
     )
-
-    useEffect(()=>{
-        if(postData.title){
-            setEnalePostBtns(true)
-        }
-        if(previousLocation === '/'){
-            setSaveOrUpdateBtns(false)
-        }else{
-            setSaveOrUpdateBtns(true)
-        }
-    },[])
 
     const handleInputForm = (e)=>{
         const inputName = e.target.name;
@@ -90,12 +94,12 @@ export default function CreateEntry() {
     const handleFormUpdate = async (e)=>{
         e.preventDefault();
         const form = new FormData()
-        form.append('id', postData.id)
+        form.append('id', savedData.id)
         form.append('title', entryForm.title)
         form.append('paragraph', entryForm.paragraph)
         if(entryForm.image !== 'image'){
             form.append('image', entryForm.image)
-            form.append('prevImage', postData.image)
+            form.append('prevImage', savedData.image)
         }
         await fetch(`${URL}/updatepost`, {
             method: 'PATCH',
