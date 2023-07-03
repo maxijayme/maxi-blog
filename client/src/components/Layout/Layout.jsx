@@ -6,7 +6,7 @@ function Layout({children, enablePostBtns=false, entryData ={}}) {
     <>
       <Header/>
       <Navbar enablePostBtns={enablePostBtns} entryData={entryData}/>
-          <main className='container-fluid h-100'>
+          <main className='container mx-auto flex flex-col justify-center'>
             {children}
           </main>
       <Footer/>

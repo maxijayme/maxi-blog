@@ -5,6 +5,7 @@ import { useState, useContext, useEffect } from "react";
 import LocationContext from '../../context/locationContext.jsx'
 export default function Navbar({enablePostBtns, entryData}) {
     const [showModal,setShowModal] = useState(false)
+    const [showBar,setShowBar] = useState(false)
     const [enableEdit,setEnableEdit] = useState(false)
     const [msg, setMsg] = useState("")
     const location = useLocation()
@@ -13,13 +14,17 @@ export default function Navbar({enablePostBtns, entryData}) {
     const navigate = useNavigate()
 
     useEffect(()=>{
-        if(previousLocation ==='/' || location.pathname !== '/newpost' ){
+        setShowBar(false)
+        if(previousLocation ==='/' || location.pathname !== '/newPost' ){
             setEnableEdit(true)
         }
-        if(location.pathname === '/newpost'){
+        else{
             setEnableEdit(false)
         }
-    },[enableEdit])
+        if(location.pathname === '/newPost'){
+            setShowBar(true)
+        }      
+    },[])
 
     const handleCreate = ()=>{
         setPreviousLocation(location.pathname)
@@ -54,6 +59,6 @@ export default function Navbar({enablePostBtns, entryData}) {
     }
 
     return (
-        <NavbarUi enableEdit={enableEdit} handleCreate={handleCreate} handleDelete={handleDelete} handleEdit={handleEdit}  showModal={showModal} enablePostBtns={enablePostBtns} msg={msg}/>
+        <NavbarUi showBar={showBar} enableEdit={enableEdit} handleCreate={handleCreate} handleDelete={handleDelete} handleEdit={handleEdit}  showModal={showModal} enablePostBtns={enablePostBtns} msg={msg}/>
     )
 }

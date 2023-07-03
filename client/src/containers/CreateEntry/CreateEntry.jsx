@@ -9,10 +9,16 @@ export default function CreateEntry() {
     const navigate = useNavigate()
     const [showModal,setShowModal] = useState(false)
     const [msg,setMsg] = useState("")
-    const [enablePostBtns, setEnalePostBtns] = useState (false)
+    const [enableSubmitBtn, setEnableSubmitBtn] = useState (true)
+    const [enablePostBtns, setEnablePostBtns] = useState (false)
     const [saveOrUpdateBtns,setSaveOrUpdateBtns] = useState(false)
     const {previousLocation} = useContext(LocationContext)
-    const getLocalStorageData = localStorage.maxiBlogPostData
+    const getLocalStorageData = localStorage.maxiBlogPostData;
+    const [validForm, setValidForm] = useState({
+        title:false,
+        image:false,
+        paragraph:false
+    })
     let savedData;
 
     if(getLocalStorageData){
@@ -20,7 +26,13 @@ export default function CreateEntry() {
     }
     useEffect(()=>{
         if(savedData?.title){
-            setEnalePostBtns(true)
+            setEnablePostBtns(true)
+            setEnableSubmitBtn(false)
+            setValidForm({
+                title:true,
+                image:true,
+                paragraph:true
+            })
         }
         if(previousLocation === '/'){
             setSaveOrUpdateBtns(false)
@@ -51,12 +63,6 @@ export default function CreateEntry() {
         }
     )
 
-    const handleInputForm = (e)=>{
-        const inputName = e.target.name;
-        const inputValue = e.target.value;
-        setEntryForm(values => ({...values, [inputName]: inputValue}))
-    }
-
     const handleImageUpload = (event) => {
         const file = event.target.files[0];
         if (file) {
@@ -70,6 +76,43 @@ export default function CreateEntry() {
         }
     };
 
+    const handleInputForm = (e)=>{
+        const inputName = e.target.name;
+        const inputValue = e.target.value;
+        setEntryForm(values => ({...values, [inputName]: inputValue}))
+        if(inputName === 'title'){
+            if(inputValue.length>150){
+                setLabelsData({...labelsData, [inputName]: "El título no puede superar los 150 caracteres"});
+                setValidForm(validForm, validForm.title=false);  
+            }
+            if(inputValue.length===0){
+                setLabelsData({...labelsData, [inputName]: "El título es un campo obligatorio"});
+                setValidForm(validForm, validForm.title=false);  
+            }
+            else{
+              setLabelsData({...labelsData, [inputName]: ""});
+              setValidForm(validForm, validForm.title=true); 
+            }
+        }
+        if(inputName === 'paragraph'){
+            if(inputValue.length>1500){
+                setLabelsData({...labelsData, [inputName]: "La entrada no puede superar los 1500 caracteres"});
+                setValidForm(validForm, validForm.paragraph=false);  
+            }
+            if(inputValue.length===0){
+                setLabelsData({...labelsData, [inputName]: "La entrada no puede estar vacía"});
+                setValidForm(validForm, validForm.paragraph=false);  
+            }
+            else{
+              setLabelsData({...labelsData, [inputName]: ""});
+              setValidForm(validForm, validForm.paragraph=true); 
+            }
+        }
+        validForm.title && validForm.paragraph && entryForm.imageUrl !=="" ?
+        setEnableSubmitBtn(false)
+        :setEnableSubmitBtn(true);
+    }
+
     const handleFormSubmit = async (e)=>{
         e.preventDefault();
         const form = new FormData()
@@ -82,6 +125,10 @@ export default function CreateEntry() {
         })
         .then(data=>{
             if (data.status === 200){
+                window.scroll({
+                    top: 0,
+                    behavior: 'smooth'
+                });
                 setShowModal(true);
                 setMsg("El post se creó con éxito")
                 setTimeout(()=>{
@@ -118,7 +165,7 @@ export default function CreateEntry() {
 
     return (
         <Layout enablePostBtns={enablePostBtns}>
-            { <CreateEntryUI saveOrUpdateBtns={saveOrUpdateBtns} showModal={showModal} msg={msg} handleInputForm={handleInputForm} handleFormUpdate={handleFormUpdate} handleImageUpload ={handleImageUpload} handleFormSubmit={handleFormSubmit} entryForm={entryForm} labelsData={labelsData}/>}
+            { <CreateEntryUI enableSubmitBtn={enableSubmitBtn} saveOrUpdateBtns={saveOrUpdateBtns} showModal={showModal} msg={msg} handleInputForm={handleInputForm} handleFormUpdate={handleFormUpdate} handleImageUpload ={handleImageUpload} handleFormSubmit={handleFormSubmit} entryForm={entryForm} labelsData={labelsData}/>}
         </Layout>
     )
 }
