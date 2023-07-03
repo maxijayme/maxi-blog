@@ -5,7 +5,7 @@ import { QueryTypes } from 'sequelize';
 
 router.get('/', async (req,res)=>{
     try{
-        const posts = await db.query(`Select * from entries `, { type: QueryTypes.SELECT });
+        const posts = await db.query(`Select * from posts `, { type: QueryTypes.SELECT });
         res.status(200).json(posts);
     }
     catch(err){
@@ -16,7 +16,7 @@ router.get('/', async (req,res)=>{
 router.get('/:id', async (req,res)=>{
     try{
         const {id} = req.params;
-        const post = await db.query(`Select * from entries where id = "${id}" `, { type: QueryTypes.SELECT });
+        const post = await db.query(`Select * from posts where id = "${id}" `, { type: QueryTypes.SELECT });
         res.status(200).json(post);
     }
     catch(err){

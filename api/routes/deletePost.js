@@ -15,7 +15,7 @@ router.delete('/:id',(req,res)=>{
               console.error(err);
               return res.status(500).send('Error al eliminar la imagen');
             }
-            await db.query (`DELETE FROM entries WHERE id=${id}`, { type: QueryTypes.DELETE })
+            await db.query (`DELETE FROM posts WHERE id=${id}`, { type: QueryTypes.DELETE })
             res.status(200).json({msj:'success deleted'}) 
           });
     }

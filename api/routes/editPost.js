@@ -32,10 +32,10 @@ router.patch('/',saveImage.single('image'), async (req,res)=>{
             });
         }
         if(image){
-            updatePost = await db.query(`Update entries set title="${title}", image= ("${image}"), entry_content ="${paragraph}" where id = "${id}"`,{type: QueryTypes.UPDATE})
+            updatePost = await db.query(`Update posts set title="${title}", image= ("${image}"), entry_content ="${paragraph}" where id = "${id}"`,{type: QueryTypes.UPDATE})
         }
         else {
-            updatePost = await db.query(`Update entries set title="${title}", entry_content ="${paragraph}" where id = "${id}"`,{type: QueryTypes.UPDATE})
+            updatePost = await db.query(`Update posts set title="${title}", entry_content ="${paragraph}" where id = "${id}"`,{type: QueryTypes.UPDATE})
         }
         if(updatePost.length>1){
             res.status(200).send({msj:"success updated"});

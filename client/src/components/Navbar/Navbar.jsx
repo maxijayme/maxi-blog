@@ -3,7 +3,7 @@ import NavbarUi from "./NavbarUi"
 import {URL} from '../../utils/url'
 import { useState, useContext, useEffect } from "react";
 import LocationContext from '../../context/locationContext.jsx'
-export default function Navbar({enablePostBtns, entryData}) {
+export default function Navbar({enablePostBtns, entryData, showComponent}) {
     const [showModal,setShowModal] = useState(false)
     const [showBar,setShowBar] = useState(false)
     const [enableEdit,setEnableEdit] = useState(false)
@@ -59,6 +59,8 @@ export default function Navbar({enablePostBtns, entryData}) {
     }
 
     return (
-        <NavbarUi showBar={showBar} enableEdit={enableEdit} handleCreate={handleCreate} handleDelete={handleDelete} handleEdit={handleEdit}  showModal={showModal} enablePostBtns={enablePostBtns} msg={msg}/>
+        <>
+            { showComponent && <NavbarUi showBar={showBar} enableEdit={enableEdit} handleCreate={handleCreate} handleDelete={handleDelete} handleEdit={handleEdit}  showModal={showModal} enablePostBtns={enablePostBtns} msg={msg}/>}
+        </>
     )
 }

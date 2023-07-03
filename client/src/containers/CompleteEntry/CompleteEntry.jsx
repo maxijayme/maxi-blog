@@ -1,13 +1,13 @@
 import CompleteEntryUi from "./CompleteEntryUi"
 import Layout from '../../components/Layout/Layout.jsx'
 import { useEffect, useState } from "react"
-import {useParams} from 'react-router-dom';
+import {useParams, useNavigate} from 'react-router-dom';
 import {URL} from '../../utils/url'
 
 export default function CompleteEntry() {
     const { id } = useParams();
     const [entryData, setEntryData] = useState([])
-   
+    const navigate = useNavigate()
 
     useEffect(()=>{
         getPost(id)
@@ -23,12 +23,17 @@ export default function CompleteEntry() {
              }).then(async response => {
                 if(response.status === 200){
                     const responseJson = await response.json()
-                    setEntryData(responseJson[0])
+                    if(responseJson.length>0){
+                        setEntryData(responseJson[0])
+                    }else{
+                        navigate('/')
+                    }
                 }
             })
         }
         catch(e){
             console.log(e)
+            location('/')
         }
     }
 

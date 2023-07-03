@@ -1,9 +1,11 @@
 import HeaderUi from "./HeaderUi"
 
-export default function Header() {
+export default function Header({showComponent}) {
     
 
     return (
-        <HeaderUi/>
+        <>
+            {showComponent && <HeaderUi />}
+        </>
     )
 }
